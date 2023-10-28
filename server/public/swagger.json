@@ -1,0 +1,223 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Bid": {
+				"properties": {
+					"buyerId": {
+						"type": "string"
+					},
+					"buyerEmail": {
+						"type": "string"
+					},
+					"productId": {
+						"type": "string"
+					},
+					"bidAmount": {
+						"type": "number",
+						"format": "double"
+					},
+					"requestedDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"productId",
+					"bidAmount"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"mongodb.ObjectId": {
+				"type": "string",
+				"description": "A class representation of the BSON ObjectId type."
+			},
+			"Buyer": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"city": {
+						"type": "string"
+					},
+					"state": {
+						"type": "string"
+					},
+					"pin": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"bid": {
+						"$ref": "#/components/schemas/Bid"
+					},
+					"_id": {
+						"$ref": "#/components/schemas/mongodb.ObjectId"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"address",
+					"city",
+					"state",
+					"pin",
+					"phone",
+					"email",
+					"bid"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "server",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/buyer/get-buyers": {
+			"get": {
+				"operationId": "GetBuyers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Buyer"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves the list  of a buyers.",
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/buyer/place-bid": {
+			"post": {
+				"operationId": "SaveBuyer",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Buyer"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/buyer/update-bid/{productid}/{buyerEmailid}/{newbidAmount}": {
+			"post": {
+				"operationId": "UpdateBid",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productid",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "buyerEmailid",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "newbidAmount",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/ping": {
+			"get": {
+				"operationId": "GetPing",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
